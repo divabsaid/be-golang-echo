@@ -8,6 +8,7 @@ var (
 	REGISTER_FAILED          = errors.New("Register Failed, Username or Email Already Exist")
 	REQUEST_BODY_NOT_VALID   = errors.New("Request Body is not Valid")
 	DELETE_FAILED            = errors.New("Delete Failed, Data not Found")
+	ADD_FAILED            = errors.New("Add Failed")
 	UPDATE_FAILED            = errors.New("Update Failed, Data not Found")
 	UPDATE_FAILED_DUPLICATE  = errors.New("Update Failed, Username or Email Already Exist")
 	LOGIN_FAILED_INACTIVE    = errors.New("Login Failed, User Inactive")
