@@ -9,6 +9,7 @@ type UserModel struct {
 	Password  string    `json:"password" validate:"required"`
 	Email     string    `json:"email" validate:"required,email"`
 	RoleID    int       `json:"role_id"`
+	RoleName  string    `json:"role_name"`
 	Active    bool      `json:"active"`
 	ImageName string    `json:"image_name"`
 	CreatedAt time.Time `json:"created_at"`
@@ -33,6 +34,10 @@ type UserProfileModel struct {
 	Username  string `json:"username" validate:"required"`
 	Fullname  string `json:"fullname" validate:"required"`
 	Email     string `json:"email" validate:"required,email"`
-	RoleID    int    `json:"role_id" validate:"required"`
+	RoleName  string `json:"role_name" validate:"required"`
 	ImageName string `json:"image_name"`
+}
+
+type TokenRequestModel struct {
+	RefreshToken string `json:"refresh_token"`
 }

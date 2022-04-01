@@ -53,8 +53,8 @@ func (m *mysqlUserRepository) UserLogin(u *user.UserLoginModel) (*user.UserLogin
 
 func (m *mysqlUserRepository) GetByID(id int) (*user.UserModel, error) {
 	userObj := new(user.UserModel)
-	row := m.db.QueryRow("SELECT id, username, fullname, email, role_id, image_name FROM user WHERE id=?", id)
-	err := row.Scan(&userObj.ID, &userObj.Username, &userObj.Fullname, &userObj.Email, &userObj.RoleID, &userObj.ImageName)
+	row := m.db.QueryRow("SELECT u.id, username, fullname, email, role_id, image_name, r.name as role FROM user u inner join role r on u.role_id = r.id  WHERE u.id=?", id)
+	err := row.Scan(&userObj.ID, &userObj.Username, &userObj.Fullname, &userObj.Email, &userObj.RoleID, &userObj.ImageName, &userObj.RoleName)
 	if err != nil {
 		return userObj, err
 	}

@@ -23,5 +23,4 @@ type ResponseModel struct {
 }
 
 type Filter struct {
-	Limit string
 }

@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS user (
     email VARCHAR(255) UNIQUE NOT NULL,
     role_id INT NOT NULL,
     active BOOLEAN NOT NULL DEFAULT 1,
+    image_name VARCHAR(255) NOT NULL DEFAULT '',
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 )

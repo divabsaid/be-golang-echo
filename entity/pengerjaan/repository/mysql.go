@@ -24,7 +24,7 @@ func NewMySQLPengerjaanRepository(db *sql.DB) PengerjaanRepository {
 }
 
 func (m *mysqlPengerjaanRepository) GetList(filter *pengerjaan.Filter) ([]*pengerjaan.PengerjaanModel, error) {
-	rows, err := m.db.Query("SELECT id, status, tanggal, nama_spk, pengaduan, lokasi, detail, estimasi_selesai, penanggung_jawab FROM pengerjaan LIMIT " + filter.Limit)
+	rows, err := m.db.Query("SELECT id, status, tanggal, nama_spk, pengaduan, lokasi, detail, estimasi_selesai, penanggung_jawab FROM pengerjaan ")
 	if err != nil {
 		return nil, err
 	}

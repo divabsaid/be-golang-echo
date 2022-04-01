@@ -4,12 +4,11 @@ import (
 	"be-golang-echo/entity/pengerjaan"
 	"be-golang-echo/entity/pengerjaan/usecase"
 	"be-golang-echo/utils"
-	"be-golang-echo/utils/config_variable"
+	"be-golang-echo/utils/authentication"
 	"net/http"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 )
 
 type PengerjaanHttpDelivery struct {
@@ -22,9 +21,7 @@ func NewHttpDelivery(e *echo.Echo, p usecase.PengerjaanUsecase) {
 	}
 
 	api := e.Group("api/v1/pengerjaans")
-	api.Use(middleware.JWTWithConfig(middleware.JWTConfig{
-		SigningKey: []byte(config_variable.Secret),
-	}))
+	api.Use(authentication.IsAuthenticated())
 	api.GET("/:id", handler.GetSingle)
 	api.PUT("/:id", handler.Update)
 	api.DELETE("/:id", handler.Delete)
@@ -50,13 +47,13 @@ func (p *PengerjaanHttpDelivery) GetList(c echo.Context) error {
 
 	filters := new(pengerjaan.Filter)
 
-	if len(c.QueryParam("limit")) == 0 {
-		resp.Status = utils.FAILED
-		resp.Message = utils.LIMIT_EMPTY
-		return c.JSON(http.StatusInternalServerError, resp)
-	}
+	// if len(c.QueryParam("limit")) == 0 {
+	// 	resp.Status = utils.FAILED
+	// 	resp.Message = utils.LIMIT_EMPTY
+	// 	return c.JSON(http.StatusInternalServerError, resp)
+	// }
 
-	filters.Limit = c.QueryParam("limit")
+	// filters.Limit = c.QueryParam("limit")
 
 	art, err := p.PengerjaanUsecase.GetList(filters)
 	if err != nil {
@@ -118,10 +115,10 @@ func (p *PengerjaanHttpDelivery) Update(c echo.Context) error {
 func (p *PengerjaanHttpDelivery) Delete(c echo.Context) error {
 	resp := new(pengerjaan.ResponseModel)
 
-	idP, err := strconv.Atoi(c.Param("id"))
+	idP, _ := strconv.Atoi(c.Param("id"))
 	id := int(idP)
 
-	_, err = p.PengerjaanUsecase.Delete(id)
+	_, err := p.PengerjaanUsecase.Delete(id)
 	if err != nil {
 		resp.Status = utils.FAILED
 		resp.Message = err.Error()
@@ -135,7 +132,7 @@ func (p *PengerjaanHttpDelivery) Delete(c echo.Context) error {
 func (p *PengerjaanHttpDelivery) GetSingle(c echo.Context) error {
 	resp := new(pengerjaan.ResponseModel)
 
-	idP, err := strconv.Atoi(c.Param("id"))
+	idP, _ := strconv.Atoi(c.Param("id"))
 	id := int(idP)
 
 	data, err := p.PengerjaanUsecase.GetSingle(id)

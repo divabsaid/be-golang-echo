@@ -37,44 +37,6 @@ func TestGetClaimsError(t *testing.T) {
 	assert.Error(t, err)
 }
 
-func TestVerifyAdminToken(t *testing.T) {
-	config_variable.Secret = ""
-	// r := redis.InitRedisTest()
-	// r.On("Get", "\x02").Return(redisClient.NewStringResult(token, nil))
-	// redis.Rdb = r
-	admin, err := jwt.VerifyAdminToken(tokenHeader)
-	assert.True(t, admin)
-	assert.NoError(t, err)
-
-}
-
-func TestVerifyAdminTokenEmpty(t *testing.T) {
-	admin, err := jwt.VerifyAdminToken("")
-	assert.False(t, admin)
-	assert.Error(t, err)
-
-}
-
-func TestVerifyAdminTokenErrSign(t *testing.T) {
-	config_variable.Secret = "error"
-	admin, err := jwt.VerifyAdminToken(tokenHeader)
-	assert.False(t, admin)
-	assert.Error(t, err)
-
-}
-
-func TestVerifyAdminTokenNotAdmin(t *testing.T) {
-	config_variable.Secret = ""
-	// r := redis.InitRedisTest()
-	// r.On("Get", "\x04").Return(redisClient.NewStringResult(wrongToken, nil))
-	// redis.Rdb = r
-	admin, err := jwt.VerifyAdminToken(wrongTokenHeader)
-	assert.False(t, admin)
-	assert.Error(t, err)
-
-}
-
-
 func TestGetIDfromToken(t *testing.T) {
 	// config_variable.Secret = ""
 	// r := redis.InitRedisTest()

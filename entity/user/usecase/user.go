@@ -5,7 +5,6 @@ import (
 	"be-golang-echo/entity/user/repository"
 	"be-golang-echo/utils/jwt"
 	"be-golang-echo/utils/password"
-	"fmt"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -13,8 +12,9 @@ import (
 
 type UserUsecase interface {
 	UserRegister(um *user.UserModel) (*user.UserModel, error)
-	UserLogin(um *user.UserLoginModel) (string, error)
+	UserLogin(um *user.UserLoginModel) (map[string]string, error)
 	GetProfile(id int) (*user.UserProfileModel, error)
+	RequestToken(id int) (map[string]string, error)
 }
 
 type userUsecase struct {
@@ -29,7 +29,7 @@ func NewUserUseCase(u repository.UserRepository) UserUsecase {
 
 func (u *userUsecase) UserRegister(um *user.UserModel) (*user.UserModel, error) {
 	err := validator.New().Struct(um)
-	fmt.Println(um)
+
 	if err != nil {
 		return um, user.REQUEST_BODY_NOT_VALID
 	}
@@ -44,23 +44,23 @@ func (u *userUsecase) UserRegister(um *user.UserModel) (*user.UserModel, error) 
 	return res, nil
 }
 
-func (u *userUsecase) UserLogin(um *user.UserLoginModel) (string, error) {
+func (u *userUsecase) UserLogin(um *user.UserLoginModel) (map[string]string, error) {
 	err := validator.New().Struct(um)
 	if err != nil {
-		return "", user.REQUEST_BODY_NOT_VALID
+		return nil, user.REQUEST_BODY_NOT_VALID
 	}
 	userObj, err := u.userRepository.UserLogin(um)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	if !userObj.Active {
-		return "", user.LOGIN_FAILED_INACTIVE
+		return nil, user.LOGIN_FAILED_INACTIVE
 	}
 	loggedIn, err := password.VerifyPassword(um.Password, userObj.Password)
 	if err != nil || !loggedIn {
-		return "", user.LOGIN_FAILED
+		return nil, user.LOGIN_FAILED
 	}
-	token, err := jwt.CreateJWTToken(userObj)
+	token, _ := jwt.CreateJWTToken(userObj)
 
 	return token, nil
 }
@@ -75,8 +75,25 @@ func (u *userUsecase) GetProfile(id int) (*user.UserProfileModel, error) {
 	profile.Email = res.Email
 	profile.Username = res.Username
 	profile.Fullname = res.Fullname
-	profile.RoleID = res.RoleID
+	profile.RoleName = res.RoleName
 	profile.ImageName = res.ImageName
 
 	return profile, nil
+}
+
+func (u *userUsecase) RequestToken(id int) (map[string]string, error) {
+	res, err := u.userRepository.GetByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	userObj := new(user.UserLoginModel)
+	userObj.ID = res.ID
+	userObj.RoleID = res.RoleID
+
+	token, _ := jwt.CreateJWTToken(userObj)
+
+	return map[string]string{
+		"access_token": token["access_token"],
+	}, nil
 }

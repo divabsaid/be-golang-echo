@@ -38,10 +38,6 @@ var (
 		CreatedAt:       time.Now(),
 		UpdatedAt:       time.Now(),
 	}
-
-	filter = &pengerjaan.Filter{
-		Limit: "10",
-	}
 )
 
 func TestAdd(t *testing.T) {
