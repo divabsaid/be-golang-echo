@@ -1,14 +1,20 @@
 package app
 
 import (
-	"log"
+	"fmt"
 
-	"github.com/joho/godotenv"
+	"github.com/spf13/viper"
 )
 
-func InitConfig() {
-	err := godotenv.Load(".env")
+func InitConfig() *viper.Viper {
+	// get config
+	config := viper.New()
+	config.SetConfigName("config")
+	config.SetConfigType("yaml")
+	config.AddConfigPath(".")
+	err := config.ReadInConfig() // Find and read the config file
 	if err != nil {
-		log.Fatalf("Some error occured. Err: %s", err)
+		panic(fmt.Errorf("fatal error config file: %s \n", err))
 	}
+	return config
 }

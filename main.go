@@ -3,7 +3,6 @@ package main
 import (
 	"be-golang-echo/app"
 	"be-golang-echo/utils/config_variable"
-	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -13,12 +12,12 @@ import (
 
 func main() {
 	//init config
-	app.InitConfig()
-	config_variable.Secret = os.Getenv("JWT_SECRET")
-	config_variable.RefreshSecret = os.Getenv("JWT_REFRESH_SECRET")
+	config := app.InitConfig()
+	config_variable.Secret = config.GetString("JWT_SECRET")
+	config_variable.RefreshSecret = config.GetString("JWT_REFRESH_SECRET")
 
 	// init database
-	dbConn := app.InitDatabase()
+	dbConn := app.InitDatabase(config)
 
 	// Echo instance
 	e := echo.New()

@@ -43,7 +43,7 @@ RUN adduser \
 COPY --from=builder --chown=appuser:appuser /be/be /be
 # COPY --from=builder --chown=appuser:appuser coklit/db /coklit
 # COPY --from=builder --chown=appuser:appuser /usr/bin/migrate /usr/bin/migrate
-
+COPY config.yaml.example /be/config.yaml
 
 USER appuser:appuser
 

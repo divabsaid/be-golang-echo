@@ -1,8 +1,8 @@
-DB_HOST: "localhost"
+DB_HOST: "maria-db-pd1"
 DB_PORT: "3306"
-DB_USER: "root"
-DB_PASS: ""
-DB_NAME: "todo"
+DB_USER: "username"
+DB_PASS: "password"
+DB_NAME: "pd1"
 
 JWT_SECRET: "secret"
 JWT_REFRESH_SECRET: "53cr3t"

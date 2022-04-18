@@ -1,0 +1,1 @@
+INSERT IGNORE INTO role (name,created_at,updated_at) VALUES ('Direktur','2022-03-30 11:10:43.0',NULL);

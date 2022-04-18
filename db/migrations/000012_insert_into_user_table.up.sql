@@ -1,0 +1,3 @@
+INSERT IGNORE INTO todo.`user` (username,password,email,created_at,updated_at,role_id,active,fullname,image_name) VALUES
+	 ('pdambersatu','$2a$04$..nKr1VNanUWnEVCEP5dY.H08KD2SyeXkCniPILhg14YTEvcUAHXC','pdambersatu@gmail.com','2022-03-14 04:53:07.0',NULL,1,1,'PDAM Bersatu','-'),
+	 ('diva','$2a$04$sOyF43RORfySO./EqIkc3OxrA95IYiWnS7RP/QLaMaEjeQGbURlWq','diva@diva.com','2022-03-30 02:19:46.0',NULL,1,1,'diva','-');

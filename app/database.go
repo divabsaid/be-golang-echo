@@ -3,18 +3,18 @@ package app
 import (
 	"database/sql"
 	"fmt"
-	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/spf13/viper"
 )
 
-func InitDatabase() *sql.DB {
+func InitDatabase(config *viper.Viper) *sql.DB {
 	// init database
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv(`DB_PORT`)
-	dbUser := os.Getenv(`DB_USER`)
-	dbPass := os.Getenv(`DB_PASS`)
-	dbName := os.Getenv(`DB_NAME`)
+	dbHost := config.GetString("DB_HOST")
+	dbPort := config.GetString(`DB_PORT`)
+	dbUser := config.GetString(`DB_USER`)
+	dbPass := config.GetString(`DB_PASS`)
+	dbName := config.GetString(`DB_NAME`)
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPass, dbHost, dbPort, dbName)
 	dbConn, err := sql.Open(`mysql`, dsn)
 	if err != nil {
